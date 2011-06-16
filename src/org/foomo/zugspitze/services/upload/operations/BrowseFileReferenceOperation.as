@@ -6,10 +6,10 @@ package org.foomo.zugspitze.services.upload.operations
 	import flash.net.FileReference;
 
 	import org.foomo.zugspitze.core.IUnload;
-	import org.foomo.zugspitze.operations.AbstractOperation;
+	import org.foomo.zugspitze.operations.Operation;
 	import org.foomo.zugspitze.operations.IOperation;
 
-	public class BrowseFileReferenceOperation extends AbstractOperation implements IOperation, IUnload
+	public class BrowseFileReferenceOperation extends Operation implements IOperation, IUnload
 	{
 		//-----------------------------------------------------------------------------------------
 		// ~ Constants

@@ -26,15 +26,15 @@ package org.foomo.zugspitze.services.upload.events
 		 */
 		public function get result():FileReference
 		{
-			return FileReference(this.operation.result);
+			return this.operation.operationResult;
 		}
 
 		/**
 		 *
 		 */
-		public function get error():*
+		public function get error():Event
 		{
-			return this.operation.error;
+			return this.operationError;
 		}
 
 		//-----------------------------------------------------------------------------------------

@@ -1,7 +1,5 @@
 package org.foomo.zugspitze.services.upload.operations
 {
-	import org.foomo.zugspitze.services.upload.events.LoadFileReferenceOperationEvent;
-
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
@@ -9,9 +7,10 @@ package org.foomo.zugspitze.services.upload.operations
 	import flash.net.FileReference;
 
 	import org.foomo.zugspitze.core.IUnload;
-	import org.foomo.zugspitze.operations.AbstractProgressOperation;
+	import org.foomo.zugspitze.operations.Operation;
+	import org.foomo.zugspitze.services.upload.events.LoadFileReferenceOperationEvent;
 
-	public class LoadFileReferenceOperation extends AbstractProgressOperation implements IUnload
+	public class LoadFileReferenceOperation extends Operation implements IUnload
 	{
 		//-----------------------------------------------------------------------------------------
 		// ~ Variables

@@ -26,7 +26,7 @@ package org.foomo.zugspitze.services.upload.events
 		 */
 		public function get result():FileReference
 		{
-			return FileReference(this.operation.result);
+			return this.operationResult;
 		}
 
 		/**
@@ -34,7 +34,7 @@ package org.foomo.zugspitze.services.upload.events
 		 */
 		public function get error():*
 		{
-			return this.operation.error;
+			return this.operationError;
 		}
 
 		//-----------------------------------------------------------------------------------------

@@ -4,7 +4,7 @@ package org.foomo.zugspitze.services.upload.models
 	import org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent;
 	import org.foomo.zugspitze.services.upload.events.FileReferenceModelEvent;
 	import org.foomo.zugspitze.services.upload.events.UploadFileReferenceOperationEvent;
-	import org.foomo.zugspitze.services.upload.model.UploadProxy;
+	import org.foomo.zugspitze.services.upload.UploadProxy;
 	import org.foomo.zugspitze.services.upload.operations.BrowseFileReferenceOperation;
 	import org.foomo.zugspitze.services.upload.operations.LoadFileReferenceOperation;
 	import org.foomo.zugspitze.services.upload.operations.UploadFileReferenceOperation;
@@ -90,7 +90,7 @@ package org.foomo.zugspitze.services.upload.models
 		public function loadFileReference():void
 		{
 			if (!this.fileReference) throw new Error('No file reference present');
-			this.runProgressOperation(new LoadFileReferenceOperation(this.fileReference));
+			this.runOperation(new LoadFileReferenceOperation(this.fileReference));
 		}
 
 		/**
@@ -99,7 +99,7 @@ package org.foomo.zugspitze.services.upload.models
 		public function uploadFileReference():void
 		{
 			if (!this.fileReference) throw new Error('No file reference present');
-			this.runProgressOperation(new UploadFileReferenceOperation(this.uploadProxy, this.fileReference), this.uploadFileReferenceOperation_resultHandler);
+			this.runOperation(new UploadFileReferenceOperation(this.uploadProxy, this.fileReference), this.uploadFileReferenceOperation_resultHandler);
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -108,7 +108,7 @@ package org.foomo.zugspitze.services.upload.models
 
 		protected function browseFileReferenceOperation_resultHandler(event:BrowseFileReferenceOperationEvent):void
 		{
-			if (!event.operation.result) return;
+			if (!event.result) return;
 			this.fileReference = event.result;
 			this.dispatchEvent(event);
 		}

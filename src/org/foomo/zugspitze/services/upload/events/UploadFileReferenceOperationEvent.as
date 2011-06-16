@@ -1,11 +1,10 @@
 package org.foomo.zugspitze.services.upload.events
 {
-	import org.foomo.zugspitze.services.sharedVo.Reference;
-
 	import flash.events.Event;
 
 	import org.foomo.zugspitze.events.OperationEvent;
 	import org.foomo.zugspitze.operations.IOperation;
+	import org.foomo.zugspitze.services.sharedVo.Reference;
 
 	public class UploadFileReferenceOperationEvent extends OperationEvent
 	{
@@ -27,7 +26,7 @@ package org.foomo.zugspitze.services.upload.events
 		 */
 		public function get result():Reference
 		{
-			return Reference(this.operation.result);
+			return this.operationResult;
 		}
 
 		/**
@@ -35,7 +34,7 @@ package org.foomo.zugspitze.services.upload.events
 		 */
 		public function get error():*
 		{
-			return this.operation.error;
+			return this.operationError;
 		}
 
 		//-----------------------------------------------------------------------------------------

@@ -1,20 +1,18 @@
 package org.foomo.zugspitze.services.upload.operations
 {
-	import org.foomo.zugspitze.services.sharedVo.Reference;
-	import org.foomo.zugspitze.services.namespaces.php.zugspitze.services.upload.Info;
-	import org.foomo.zugspitze.services.upload.events.ChunkUploadOperationEvent;
-	import org.foomo.zugspitze.services.upload.events.UploadFileReferenceOperationEvent;
-	import org.foomo.zugspitze.services.upload.model.UploadProxy;
-
 	import flash.net.FileReference;
 
 	import mx.utils.Base64Encoder;
 
 	import org.foomo.zugspitze.core.IUnload;
-	import org.foomo.zugspitze.events.ProgressOperationEvent;
-	import org.foomo.zugspitze.operations.AbstractProgressOperation;
+	import org.foomo.zugspitze.operations.CompositeOperation;
+	import org.foomo.zugspitze.services.namespaces.php.foomo.zugspitze.services.upload.Info;
+	import org.foomo.zugspitze.services.sharedVo.Reference;
+	import org.foomo.zugspitze.services.upload.UploadProxy;
+	import org.foomo.zugspitze.services.upload.events.ChunkUploadOperationEvent;
+	import org.foomo.zugspitze.services.upload.events.UploadFileReferenceOperationEvent;
 
-	public class UploadFileReferenceOperation extends AbstractProgressOperation implements IUnload
+	public class UploadFileReferenceOperation extends CompositeOperation implements IUnload
 	{
 		//-----------------------------------------------------------------------------------------
 		// ~ Constants
@@ -68,6 +66,7 @@ package org.foomo.zugspitze.services.upload.operations
 
 		public function UploadFileReferenceOperation(proxy:UploadProxy, fileReference:FileReference, chunkSize:int=65536)
 		{
+			trace('[DEBUG] UploadFileReferenceOperation.UploadFileReferenceOperation()');
 			super(UploadFileReferenceOperationEvent);
 			this._proxy = proxy;
 			this._encoder = new Base64Encoder;
@@ -97,14 +96,15 @@ package org.foomo.zugspitze.services.upload.operations
 			var offset:uint = (this._uploadInfo) ? this._uploadInfo.size : 0;
 			var length:uint = Math.min(this._fileReference.data.length - offset, this._chunkSize);
 			this._encoder.encodeBytes(this._fileReference.data, offset, length);
-			this._proxy.chunkUploadMethod.call(
-				this._encoder.toString(),
-				this._fileReference.size,
-				this._fileReference.name,
-				(this._uploadInfo) ? this._uploadInfo.id : null,
-				this.chunkedUploadMethodCall_operationCompleteHandler,
-				this.chunkedUploadMethodCall_operationProgressHandler,
-				this.chunkedUploadMethodCall_operationErrorHandler
+			this.runOperation(
+				new ChunkUploadOperation(
+					this._proxy,
+					this._encoder.toString(),
+					this._fileReference.size,
+					this._fileReference.name,
+					(this._uploadInfo) ? this._uploadInfo.id : null
+				),
+				this.chunkedUploadOperation_operationCompleteHandler
 			);
 		}
 
@@ -112,14 +112,9 @@ package org.foomo.zugspitze.services.upload.operations
 		// ~ Protected eventhandler
 		//-----------------------------------------------------------------------------------------
 
-		protected function chunkedUploadMethodCall_operationProgressHandler(event:ProgressOperationEvent):void
+		protected function chunkedUploadOperation_operationCompleteHandler(event:ChunkUploadOperationEvent):void
 		{
-			trace('[DEBUG] UploadOperation.chunkedUploadMethodCall_operationProgressHandler()');
-		}
-
-		protected function chunkedUploadMethodCall_operationCompleteHandler(event:ChunkUploadOperationEvent):void
-		{
-			this._uploadInfo = Info(event.result.value);
+			this._uploadInfo = event.result;
 
 			this.dispatchOperationProgressEvent(this._fileReference.size, this._uploadInfo.size);
 
@@ -137,11 +132,6 @@ package org.foomo.zugspitze.services.upload.operations
 				uploadReference.modificationDate = this._fileReference.modificationDate.getTime();
 				this.dispatchOperationCompleteEvent(uploadReference);
 			}
-		}
-
-		protected function chunkedUploadMethodCall_operationErrorHandler(event:ChunkUploadOperationEvent):void
-		{
-			trace('[DEBUG] ChunkedUploadOperation.chunkedUploadMethodCall_errorHandler()');
 		}
 	}
 }

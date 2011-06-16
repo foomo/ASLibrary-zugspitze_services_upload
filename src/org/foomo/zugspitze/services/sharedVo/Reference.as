@@ -3,7 +3,7 @@ package org.foomo.zugspitze.services.sharedVo
 	/**
 	 * value object containing flash client side of an uploaded file plus its uploadId
 	 */
-	[RemoteClass(alias="Zugspitze.Services.Upload.Reference")]
+	[RemoteClass(alias="Foomo.Zugspitze.Services.Upload.Reference")]
 	public class Reference
 	{
 		//-----------------------------------------------------------------------------------------
