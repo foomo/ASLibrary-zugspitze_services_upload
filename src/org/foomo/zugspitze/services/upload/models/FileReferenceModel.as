@@ -1,6 +1,6 @@
 package org.foomo.zugspitze.services.upload.models
 {
-	import org.foomo.zugspitze.services.upload.vos.UploadReference;
+	import org.foomo.zugspitze.services.upload.vos.Reference;
 	import org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent;
 	import org.foomo.zugspitze.services.upload.events.FileReferenceModelEvent;
 	import org.foomo.zugspitze.services.upload.events.UploadFileReferenceOperationEvent;
@@ -29,7 +29,7 @@ package org.foomo.zugspitze.services.upload.models
 		// ~ Variables
 		//-----------------------------------------------------------------------------------------
 
-		private var _uploadReference:UploadReference;
+		private var _uploadReference:Reference;
 
 		private var _uploadReferenceURI:String;
 
@@ -61,7 +61,7 @@ package org.foomo.zugspitze.services.upload.models
 		}
 
 		[Bindable(event="uploadReferenceChanged")]
-		public function get uploadReference():UploadReference
+		public function get uploadReference():Reference
 		{
 			return this._uploadReference;
 		}
