@@ -1,7 +1,7 @@
 package org.foomo.zugspitze.services.upload.events
 {
 	import org.foomo.zugspitze.events.OperationEvent;
-	import org.foomo.zugspitze.services.sharedVo.Reference;
+	import org.foomo.zugspitze.services.upload.vos.UploadReference;
 
 	public class UploadFileReferenceOperationEvent extends OperationEvent
 	{
@@ -17,7 +17,7 @@ package org.foomo.zugspitze.services.upload.events
 		// ~ Constructor
 		//-----------------------------------------------------------------------------------------
 
-		public function UploadFileReferenceOperationEvent(type:String, result:Reference=null, error:*=null, total:Number=0, progress:Number=0)
+		public function UploadFileReferenceOperationEvent(type:String, result:UploadReference=null, error:*=null, total:Number=0, progress:Number=0)
 		{
 			super(type, result, error, total, progress);
 		}
@@ -29,7 +29,7 @@ package org.foomo.zugspitze.services.upload.events
 		/**
 		 *
 		 */
-		public function get result():Reference
+		public function get result():UploadReference
 		{
 			return this.untypedResult;
 		}

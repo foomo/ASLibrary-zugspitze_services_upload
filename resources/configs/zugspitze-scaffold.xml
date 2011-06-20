@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.foomo.org/zugspitze" xsi:schemaLocation="http://www.foomo.org/zugspitze http://foomo.bestbytes.net/zugspitze/scaffold.xsd">
-	<id>org.foomo.zugspitze.module</id>
+	<id>org.foomo.zugspitze.services.upload</id>
 	<type>Core Library</type>
 	<name>Foomigo Zugspitze Module.</name>
 	<description>Includes some services</description>
 	<dependencies>
 		<id>org.foomo.zugspitze.core</id>
-		<id>org.foomo.zugspitze.services</id>
+		<id>org.foomo.zugspitze.services.core</id>
 	</dependencies>
 </config>

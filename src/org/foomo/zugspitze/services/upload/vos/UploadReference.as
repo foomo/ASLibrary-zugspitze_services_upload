@@ -1,10 +1,10 @@
-package org.foomo.zugspitze.services.sharedVo
+package org.foomo.zugspitze.services.upload.vos
 {
 	/**
 	 * value object containing flash client side of an uploaded file plus its uploadId
 	 */
-	[RemoteClass(alias="Foomo.Zugspitze.Services.Upload.Reference")]
-	public class Reference
+	[RemoteClass(alias="Foomo.Zugspitze.Upload.UploadReference")]
+	public class UploadReference
 	{
 		//-----------------------------------------------------------------------------------------
 		// ~ Variables

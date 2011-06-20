@@ -6,11 +6,12 @@ package org.foomo.zugspitze.services.upload.operations
 
 	import org.foomo.zugspitze.core.IUnload;
 	import org.foomo.zugspitze.operations.CompositeOperation;
+	import org.foomo.zugspitze.services.core.proxy.operations.ProxyMethodOperation;
 	import org.foomo.zugspitze.services.namespaces.php.foomo.zugspitze.services.upload.Info;
-	import org.foomo.zugspitze.services.sharedVo.Reference;
 	import org.foomo.zugspitze.services.upload.UploadProxy;
 	import org.foomo.zugspitze.services.upload.events.ChunkUploadOperationEvent;
 	import org.foomo.zugspitze.services.upload.events.UploadFileReferenceOperationEvent;
+	import org.foomo.zugspitze.services.upload.vos.UploadReference;
 
 	public class UploadFileReferenceOperation extends CompositeOperation implements IUnload
 	{
@@ -66,7 +67,6 @@ package org.foomo.zugspitze.services.upload.operations
 
 		public function UploadFileReferenceOperation(proxy:UploadProxy, fileReference:FileReference, chunkSize:int=65536)
 		{
-			trace('[DEBUG] UploadFileReferenceOperation.UploadFileReferenceOperation()');
 			super(UploadFileReferenceOperationEvent);
 			this._proxy = proxy;
 			this._encoder = new Base64Encoder;
@@ -121,7 +121,7 @@ package org.foomo.zugspitze.services.upload.operations
 			if (this.progress < this.total) {
 				this.uploadChunk();
 			} else {
-				var uploadReference:Reference = new Reference();
+				var uploadReference:UploadReference = new UploadReference();
 				uploadReference.id = this._uploadInfo.id;
 				uploadReference.creator = this._fileReference.creator;
 				uploadReference.extension = this._fileReference.name.substring(this._fileReference.name.lastIndexOf('.') + 1);
