@@ -1,17 +1,16 @@
 package org.foomo.zugspitze.services.upload.models
 {
-	import org.foomo.zugspitze.services.upload.vos.Reference;
-	import org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent;
-	import org.foomo.zugspitze.services.upload.events.FileReferenceModelEvent;
-	import org.foomo.zugspitze.services.upload.events.UploadFileReferenceOperationEvent;
-	import org.foomo.zugspitze.services.upload.UploadProxy;
-	import org.foomo.zugspitze.services.upload.operations.BrowseFileReferenceOperation;
-	import org.foomo.zugspitze.services.upload.operations.LoadFileReferenceOperation;
-	import org.foomo.zugspitze.services.upload.operations.UploadFileReferenceOperation;
-
 	import flash.net.FileReference;
 
 	import org.foomo.zugspitze.core.ZugspitzeModel;
+	import org.foomo.zugspitze.services.upload.UploadProxy;
+	import org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent;
+	import org.foomo.zugspitze.services.upload.events.FileReferenceModelEvent;
+	import org.foomo.zugspitze.services.upload.events.UploadFileReferenceOperationEvent;
+	import org.foomo.zugspitze.services.upload.operations.BrowseFileReferenceOperation;
+	import org.foomo.zugspitze.services.upload.operations.LoadFileReferenceOperation;
+	import org.foomo.zugspitze.services.upload.operations.UploadFileReferenceOperation;
+	import org.foomo.zugspitze.services.upload.vos.UploadReference;
 
 	[Event(name="fileReferenceChanged", type="org.foomo.zugspitze.examples.components.upload.events.FileReferenceModelEvent")]
 	[Event(name="uploadReferenceChanged", type="org.foomo.zugspitze.examples.components.upload.events.FileReferenceModelEvent")]
@@ -29,7 +28,7 @@ package org.foomo.zugspitze.services.upload.models
 		// ~ Variables
 		//-----------------------------------------------------------------------------------------
 
-		private var _uploadReference:Reference;
+		private var _uploadReference:UploadReference;
 
 		private var _uploadReferenceURI:String;
 
@@ -61,7 +60,7 @@ package org.foomo.zugspitze.services.upload.models
 		}
 
 		[Bindable(event="uploadReferenceChanged")]
-		public function get uploadReference():Reference
+		public function get uploadReference():UploadReference
 		{
 			return this._uploadReference;
 		}
