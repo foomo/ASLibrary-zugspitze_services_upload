@@ -1,26 +1,42 @@
 package org.foomo.zugspitze.services.upload.commands
 {
-	import org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent;
-	import org.foomo.zugspitze.services.upload.events.LoadFileReferenceOperationEvent;
-	import org.foomo.zugspitze.services.upload.events.UploadFileReferenceOperationEvent;
-	import org.foomo.zugspitze.services.upload.models.FileReferenceModel;
+	import flash.events.Event;
 
 	import org.foomo.zugspitze.commands.Command;
 	import org.foomo.zugspitze.commands.ICommand;
 	import org.foomo.zugspitze.core.IUnload;
 	import org.foomo.zugspitze.events.OperationEvent;
+	import org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent;
+	import org.foomo.zugspitze.services.upload.events.LoadFileReferenceOperationEvent;
+	import org.foomo.zugspitze.services.upload.events.UploadFileReferenceOperationEvent;
+	import org.foomo.zugspitze.services.upload.models.FileReferenceModel;
+	import org.foomo.zugspitze.utils.OperationUtils;
 
+	/**
+	 *
+	 */
 	public class SelectAndUploadFileCommand extends Command implements ICommand, IUnload
 	{
 		//-----------------------------------------------------------------------------------------
 		// ~ Variables
 		//-----------------------------------------------------------------------------------------
 
+		/**
+		 *
+		 */
 		public var model:FileReferenceModel;
+		/**
+		 *
+		 */
 		public var typeFilter:Array;
+		/**
+		 *
+		 */
 		public var maxSize:int;
+		/**
+		 *
+		 */
 		public var minSize:int
-
 
 		//-----------------------------------------------------------------------------------------
 		// ~ Constructor
@@ -40,29 +56,34 @@ package org.foomo.zugspitze.services.upload.commands
 		// ~ Public methods
 		//-----------------------------------------------------------------------------------------
 
+		/**
+		 * @see org.foomo.zugspitze.commands.ICommand
+		 */
 		public function execute():void
 		{
-			this.model.addEventListener(OperationEvent.OPERATION_COMPLETE, this.model_operationCompleteHandler);
-			this.model.addEventListener(OperationEvent.OPERATION_ERROR, this.model_operationErrorHandler);
-			this.model.browse(this.typeFilter, maxSize,  minSize);
-
+			OperationUtils.addEventListeners(this.model.browseFileReference(this.typeFilter, maxSize,  minSize), this.model_operationCompleteHandler, model_operationErrorHandler);
 		}
 
+		/**
+		 * @see org.foomo.zugspitze.core.IUnload
+		 */
 		public function unload():void
 		{
-			this.model.removeEventListener(OperationEvent.OPERATION_COMPLETE, this.model_operationCompleteHandler);
-			this.model.addEventListener(OperationEvent.OPERATION_ERROR, this.model_operationErrorHandler);
 			this.model = null;
 		}
 
-		private function model_operationCompleteHandler(event:OperationEvent):void
+		//-----------------------------------------------------------------------------------------
+		// ~ Private eventhandler
+		//-----------------------------------------------------------------------------------------
+
+		private function model_operationCompleteHandler(event:Event):void
 		{
 			switch (true) {
 				case (event is BrowseFileReferenceOperationEvent):
-					this.model.loadFileReference()
+					OperationUtils.addEventListeners(this.model.loadFileReference(), this.model_operationCompleteHandler, model_operationErrorHandler);
 					break;
 				case (event is LoadFileReferenceOperationEvent):
-					this.model.uploadFileReference()
+					OperationUtils.addEventListeners(this.model.uploadFileReference(), this.model_operationCompleteHandler, model_operationErrorHandler);
 					break;
 				case (event is UploadFileReferenceOperationEvent):
 					this.dispatchCommandCompleteEvent();

@@ -9,6 +9,10 @@ package org.foomo.zugspitze.services.upload.operations
 	import org.foomo.zugspitze.operations.Operation;
 	import org.foomo.zugspitze.operations.IOperation;
 
+	[Event(name="browseFileReferenceOperationComplete", type="org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent")]
+	[Event(name="browseFileReferenceOperationProgress", type="org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent")]
+	[Event(name="browseFileReferenceOperationError", type="org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent")]
+
 	public class BrowseFileReferenceOperation extends Operation implements IOperation, IUnload
 	{
 		//-----------------------------------------------------------------------------------------

@@ -79,27 +79,27 @@ package org.foomo.zugspitze.services.upload.models
 		/**
 		 *
 		 */
-		public function browse(typeFiler:Array, maxSize:int=0, minSize:int=0):void
+		public function browseFileReference(typeFiler:Array, maxSize:int=0, minSize:int=0):BrowseFileReferenceOperation
 		{
-			this.runOperation(new BrowseFileReferenceOperation(typeFiler, maxSize, minSize), this.browseFileReferenceOperation_resultHandler);
+			return this.runOperation(new BrowseFileReferenceOperation(typeFiler, maxSize, minSize), this.browseFileReferenceOperation_resultHandler);
 		}
 
 		/**
 		 *
 		 */
-		public function loadFileReference():void
+		public function loadFileReference():LoadFileReferenceOperation
 		{
 			if (!this.fileReference) throw new Error('No file reference present');
-			this.runOperation(new LoadFileReferenceOperation(this.fileReference));
+			return this.runOperation(new LoadFileReferenceOperation(this.fileReference));
 		}
 
 		/**
 		 *
 		 */
-		public function uploadFileReference():void
+		public function uploadFileReference():UploadFileReferenceOperation
 		{
 			if (!this.fileReference) throw new Error('No file reference present');
-			this.runOperation(new UploadFileReferenceOperation(this.uploadProxy, this.fileReference), this.uploadFileReferenceOperation_resultHandler);
+			return this.runOperation(new UploadFileReferenceOperation(this.uploadProxy, this.fileReference), this.uploadFileReferenceOperation_resultHandler);
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -117,7 +117,7 @@ package org.foomo.zugspitze.services.upload.models
 		{
 			this._uploadReference = event.result;
 			this.dispatchEvent(new FileReferenceModelEvent(FileReferenceModelEvent.UPLOAD_REFERENCE_CHANGED));
-			this._uploadReferenceURI = this.uploadReference.getReflectionUri(this.uploadProxy.rpcClient.endPoint);
+			this._uploadReferenceURI = this.uploadReference.getReflectionUri(this.uploadProxy.client.endPoint);
 			this.dispatchEvent(new FileReferenceModelEvent(FileReferenceModelEvent.UPLOAD_REFERENCE_URI_CHANGED));
 			this.dispatchEvent(event);
 		}

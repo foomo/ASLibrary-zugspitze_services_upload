@@ -9,12 +9,20 @@ package org.foomo.zugspitze.services.upload.events
 	public class BrowseFileReferenceOperationEvent extends OperationEvent
 	{
 		//-----------------------------------------------------------------------------------------
+		// ~ Constants
+		//-----------------------------------------------------------------------------------------
+
+		public static const BROWSE_FILE_REFERENCE_OPERATION_COMPLETE:String = 'browseFileReferenceOperationComplete';
+		public static const BROWSE_FILE_REFERENCE_OPERATION_PROGRESS:String = 'browseFileReferenceOperationProgress';
+		public static const BROWSE_FILE_REFERENCE_OPERATION_ERROR:String = 'browseFileReferenceOperationError';
+
+		//-----------------------------------------------------------------------------------------
 		// ~ Constructor
 		//-----------------------------------------------------------------------------------------
 
-		public function BrowseFileReferenceOperationEvent(type:String, operation:IOperation)
+		public function BrowseFileReferenceOperationEvent(type:String, result:*=null, error:*=null, total:Number=0, progress:Number=0)
 		{
-			super(type, operation);
+			super(type, result, error, total, progress);
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -26,7 +34,7 @@ package org.foomo.zugspitze.services.upload.events
 		 */
 		public function get result():FileReference
 		{
-			return this.operation.operationResult;
+			return this.untypedResult;
 		}
 
 		/**
@@ -34,27 +42,7 @@ package org.foomo.zugspitze.services.upload.events
 		 */
 		public function get error():Event
 		{
-			return this.operationError;
-		}
-
-		//-----------------------------------------------------------------------------------------
-		// ~ Overriden methods
-		//-----------------------------------------------------------------------------------------
-
-		/**
-		 * @inherit
-		 */
-		override public function clone():Event
-		{
-			return new BrowseFileReferenceOperationEvent(this.type, this.operation);
-		}
-
-		/**
-		 * @inherit
-		 */
-		override public function toString():String
-		{
-			return formatToString('BrowseFileReferenceOperationEvent');
+			return this.untypedError;
 		}
 	}
 }

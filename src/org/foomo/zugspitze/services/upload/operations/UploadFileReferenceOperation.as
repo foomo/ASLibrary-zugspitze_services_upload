@@ -98,11 +98,11 @@ package org.foomo.zugspitze.services.upload.operations
 			this._encoder.encodeBytes(this._fileReference.data, offset, length);
 			this.runOperation(
 				new ChunkUploadOperation(
-					this._proxy,
 					this._encoder.toString(),
 					this._fileReference.size,
 					this._fileReference.name,
-					(this._uploadInfo) ? this._uploadInfo.id : null
+					(this._uploadInfo) ? this._uploadInfo.id : null,
+					this._proxy
 				),
 				this.chunkedUploadOperation_operationCompleteHandler
 			);

@@ -1,20 +1,26 @@
 package org.foomo.zugspitze.services.upload.events
 {
-	import flash.events.Event;
 	import flash.net.FileReference;
 
 	import org.foomo.zugspitze.events.OperationEvent;
-	import org.foomo.zugspitze.operations.IOperation;
 
 	public class LoadFileReferenceOperationEvent extends OperationEvent
 	{
 		//-----------------------------------------------------------------------------------------
+		// ~ Constants
+		//-----------------------------------------------------------------------------------------
+
+		public static const LOAD_FILE_REFERENCE_OPERATION_COMPLETE:String = 'loadFileReferenceOperationComplete';
+		public static const LOAD_FILE_REFERENCE_OPERATION_PROGRESS:String = 'loadFileReferenceOperationProgress';
+		public static const LOAD_FILE_REFERENCE_OPERATION_ERROR:String = 'loadFileReferenceOperationError';
+
+		//-----------------------------------------------------------------------------------------
 		// ~ Constructor
 		//-----------------------------------------------------------------------------------------
 
-		public function LoadFileReferenceOperationEvent(type:String, operation:IOperation)
+		public function LoadFileReferenceOperationEvent(type:String, result:FileReference=null, error:*=null, total:Number=0, progress:Number=0)
 		{
-			super(type, operation);
+			super(type, result, error, total, progress);
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -26,7 +32,7 @@ package org.foomo.zugspitze.services.upload.events
 		 */
 		public function get result():FileReference
 		{
-			return this.operationResult;
+			return this.untypedResult;
 		}
 
 		/**
@@ -34,27 +40,7 @@ package org.foomo.zugspitze.services.upload.events
 		 */
 		public function get error():*
 		{
-			return this.operationError;
-		}
-
-		//-----------------------------------------------------------------------------------------
-		// ~ Overriden methods
-		//-----------------------------------------------------------------------------------------
-
-		/**
-		 * @inherit
-		 */
-		override public function clone():Event
-		{
-			return new LoadFileReferenceOperationEvent(this.type, this.operation);
-		}
-
-		/**
-		 * @inherit
-		 */
-		override public function toString():String
-		{
-			return formatToString('LoadFileReferenceOperationEvent');
+			return this.untypedError;
 		}
 	}
 }
