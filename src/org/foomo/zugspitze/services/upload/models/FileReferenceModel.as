@@ -80,7 +80,7 @@ package org.foomo.zugspitze.services.upload.models
 		 */
 		public function browseFileReference(typeFiler:Array, maxSize:int=0, minSize:int=0):BrowseFileReferenceOperation
 		{
-			return this.runOperation(new BrowseFileReferenceOperation(typeFiler, maxSize, minSize), this.browseFileReferenceOperation_resultHandler);
+			return this.registerOperation(new BrowseFileReferenceOperation(typeFiler, maxSize, minSize),this.browseFileReferenceOperation_resultHandler);
 		}
 
 		/**
@@ -89,7 +89,7 @@ package org.foomo.zugspitze.services.upload.models
 		public function loadFileReference():LoadFileReferenceOperation
 		{
 			if (!this.fileReference) throw new Error('No file reference present');
-			return this.runOperation(new LoadFileReferenceOperation(this.fileReference));
+			return this.registerOperation(new LoadFileReferenceOperation(this.fileReference));
 		}
 
 		/**
@@ -98,7 +98,7 @@ package org.foomo.zugspitze.services.upload.models
 		public function uploadFileReference():UploadFileReferenceOperation
 		{
 			if (!this.fileReference) throw new Error('No file reference present');
-			return this.runOperation(new UploadFileReferenceOperation(this.uploadProxy, this.fileReference), this.uploadFileReferenceOperation_resultHandler);
+			return this.registerOperation(new UploadFileReferenceOperation(this.uploadProxy, this.fileReference),this.uploadFileReferenceOperation_resultHandler);
 		}
 
 		//-----------------------------------------------------------------------------------------

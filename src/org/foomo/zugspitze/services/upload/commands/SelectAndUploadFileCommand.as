@@ -61,7 +61,7 @@ package org.foomo.zugspitze.services.upload.commands
 		 */
 		public function execute():void
 		{
-			OperationUtils.addEventListeners(this.model.browseFileReference(this.typeFilter, maxSize,  minSize), this.model_operationCompleteHandler, model_operationErrorHandler);
+			OperationUtils.register(this.model.browseFileReference(this.typeFilter, maxSize,  minSize), this.model_operationCompleteHandler, model_operationErrorHandler);
 		}
 
 		/**
@@ -80,10 +80,10 @@ package org.foomo.zugspitze.services.upload.commands
 		{
 			switch (true) {
 				case (event is BrowseFileReferenceOperationEvent):
-					OperationUtils.addEventListeners(this.model.loadFileReference(), this.model_operationCompleteHandler, model_operationErrorHandler);
+					OperationUtils.register(this.model.loadFileReference(), this.model_operationCompleteHandler, model_operationErrorHandler);
 					break;
 				case (event is LoadFileReferenceOperationEvent):
-					OperationUtils.addEventListeners(this.model.uploadFileReference(), this.model_operationCompleteHandler, model_operationErrorHandler);
+					OperationUtils.register(this.model.uploadFileReference(), this.model_operationCompleteHandler, model_operationErrorHandler);
 					break;
 				case (event is UploadFileReferenceOperationEvent):
 					this.dispatchCommandCompleteEvent();

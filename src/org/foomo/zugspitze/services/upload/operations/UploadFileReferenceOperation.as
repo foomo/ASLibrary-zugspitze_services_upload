@@ -96,7 +96,7 @@ package org.foomo.zugspitze.services.upload.operations
 			var offset:uint = (this._uploadInfo) ? this._uploadInfo.size : 0;
 			var length:uint = Math.min(this._fileReference.data.length - offset, this._chunkSize);
 			this._encoder.encodeBytes(this._fileReference.data, offset, length);
-			this.runOperation(
+			this.registerOperation(
 				new ChunkUploadOperation(
 					this._encoder.toString(),
 					this._fileReference.size,
