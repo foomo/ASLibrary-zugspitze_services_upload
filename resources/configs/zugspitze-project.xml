@@ -6,6 +6,7 @@
 	<description>Includes some services</description>
 	<dependencies>
 		<id>org.foomo.zugspitze.core</id>
-		<id>org.foomo.zugspitze.services.core</id>
+		<id>org.foomo.zugspitze.services.core.rpc</id>
+		<id>org.foomo.zugspitze.services.core.proxy</id>
 	</dependencies>
 </config>
