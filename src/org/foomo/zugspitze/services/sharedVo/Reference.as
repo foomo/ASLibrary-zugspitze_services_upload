@@ -17,14 +17,13 @@
 package org.foomo.zugspitze.services.sharedVo
 {
 	[RemoteClass(alias="Zugspitze.Services.Upload.Reference")]
-
+	
 	/**
 	 * value object containing flash client side of an uploaded file plus its uploadId
 	 *
-	 * @link    www.foomo.org
-	 * @license www.gnu.org/licenses/lgpl.txt
+	 * @link    http://www.foomo.org
+	 * @license http://www.gnu.org/licenses/lgpl.txt
 	 * @author  franklin <franklin@weareinteractive.com>
-	 * @author  jan <jan@bestbytes.de>
 	 */
 	public class Reference
 	{
