@@ -4,7 +4,7 @@ package org.foomo.zugspitze.services.namespaces.php.foomo.zugspitze.services.upl
 	[RemoteClass(alias='Foomo.Zugspitze.Services.Upload.Info')]
 
 	/**
-	 * Class describing a file upload
+	 * class describing a file upload
 	 * be careful wit these data, they are user input
 	 */
 	public class Info

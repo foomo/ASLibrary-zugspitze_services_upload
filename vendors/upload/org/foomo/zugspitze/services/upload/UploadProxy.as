@@ -4,6 +4,7 @@ package org.foomo.zugspitze.services.upload
 	import org.foomo.zugspitze.services.core.proxy.Proxy;
 	import org.foomo.zugspitze.services.upload.calls.ChunkUploadCall;
 	import org.foomo.zugspitze.services.upload.calls.CancelChunkUploadCall;
+	import org.foomo.zugspitze.services.namespaces.php.foomo.zugspitze.services.upload.Info;
 
 	public class UploadProxy extends Proxy
 	{
@@ -21,7 +22,7 @@ package org.foomo.zugspitze.services.upload
 		/**
 		 *
 		 */
-		public static var defaultEndPoint:String = 'http://foomo.radact.interact.com/foomo/modules/Foomo.Zugspitze/services/upload.php/Foomo.Services.RPC/serve';
+		public static var defaultEndPoint:String = 'http://foomo.radact.interact.com/foomo/index.php/Foomo/showMVCApp/Foomo.Zugspitze.ProxyGenerator/serve';
 
 		//-----------------------------------------------------------------------------------------
 		// ~ Constructor

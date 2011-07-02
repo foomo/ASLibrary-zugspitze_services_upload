@@ -3,7 +3,7 @@ package org.foomo.zugspitze.services.upload.commands
 	import org.foomo.zugspitze.services.upload.UploadProxy;
 	import org.foomo.zugspitze.services.upload.calls.CancelChunkUploadCall;
 	import org.foomo.zugspitze.services.upload.events.CancelChunkUploadCallEvent;
-
+	
 	import org.foomo.zugspitze.commands.Command;
 	import org.foomo.zugspitze.commands.ICommand;
 	import org.foomo.zugspitze.core.IUnload;
