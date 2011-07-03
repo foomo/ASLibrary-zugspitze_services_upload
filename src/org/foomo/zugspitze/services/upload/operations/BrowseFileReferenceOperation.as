@@ -16,14 +16,13 @@
  */
 package org.foomo.zugspitze.services.upload.operations
 {
-	import org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent;
-
 	import flash.events.Event;
 	import flash.net.FileReference;
 
-	import org.foomo.zugspitze.core.IUnload;
-	import org.foomo.zugspitze.operations.Operation;
+	import org.foomo.flash.core.IUnload;
 	import org.foomo.zugspitze.operations.IOperation;
+	import org.foomo.zugspitze.operations.Operation;
+	import org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent;
 
 	[Event(name="browseFileReferenceOperationComplete", type="org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent")]
 	[Event(name="browseFileReferenceOperationProgress", type="org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent")]

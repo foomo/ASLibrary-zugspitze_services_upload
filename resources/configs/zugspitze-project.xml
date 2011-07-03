@@ -5,6 +5,7 @@
 	<name>Upload Service</name>
 	<description>Includes some services</description>
 	<dependencies>
+		<id>org.foomo.flash</id>
 		<id>org.foomo.zugspitze.core</id>
 		<id>org.foomo.zugspitze.services.core.rpc</id>
 		<id>org.foomo.zugspitze.services.core.proxy</id>

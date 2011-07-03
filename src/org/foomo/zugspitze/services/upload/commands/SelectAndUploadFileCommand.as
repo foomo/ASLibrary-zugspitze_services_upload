@@ -18,15 +18,15 @@ package org.foomo.zugspitze.services.upload.commands
 {
 	import flash.events.Event;
 
+	import org.foomo.flash.core.IUnload;
 	import org.foomo.zugspitze.commands.Command;
 	import org.foomo.zugspitze.commands.ICommand;
-	import org.foomo.zugspitze.core.IUnload;
 	import org.foomo.zugspitze.events.OperationEvent;
 	import org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent;
 	import org.foomo.zugspitze.services.upload.events.LoadFileReferenceOperationEvent;
 	import org.foomo.zugspitze.services.upload.events.UploadFileReferenceOperationEvent;
 	import org.foomo.zugspitze.services.upload.models.FileReferenceModel;
-	import org.foomo.zugspitze.utils.OperationUtils;
+	import org.foomo.zugspitze.utils.OperationUtil;
 
 	/**
 	 * @link    http://www.foomo.org
@@ -79,7 +79,7 @@ package org.foomo.zugspitze.services.upload.commands
 		 */
 		public function execute():void
 		{
-			OperationUtils.register(this.model.browseFileReference(this.typeFilter, maxSize,  minSize), this.model_operationCompleteHandler, model_operationErrorHandler);
+			OperationUtil.register(this.model.browseFileReference(this.typeFilter, maxSize,  minSize), this.model_operationCompleteHandler, model_operationErrorHandler);
 		}
 
 		/**
@@ -98,10 +98,10 @@ package org.foomo.zugspitze.services.upload.commands
 		{
 			switch (true) {
 				case (event is BrowseFileReferenceOperationEvent):
-					OperationUtils.register(this.model.loadFileReference(), this.model_operationCompleteHandler, model_operationErrorHandler);
+					OperationUtil.register(this.model.loadFileReference(), this.model_operationCompleteHandler, model_operationErrorHandler);
 					break;
 				case (event is LoadFileReferenceOperationEvent):
-					OperationUtils.register(this.model.uploadFileReference(), this.model_operationCompleteHandler, model_operationErrorHandler);
+					OperationUtil.register(this.model.uploadFileReference(), this.model_operationCompleteHandler, model_operationErrorHandler);
 					break;
 				case (event is UploadFileReferenceOperationEvent):
 					this.dispatchCommandCompleteEvent();

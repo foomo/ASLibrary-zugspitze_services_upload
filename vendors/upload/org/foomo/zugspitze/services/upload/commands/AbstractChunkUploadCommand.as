@@ -1,12 +1,11 @@
 package org.foomo.zugspitze.services.upload.commands
 {
+	import org.foomo.flash.core.IUnload;
+	import org.foomo.zugspitze.commands.Command;
+	import org.foomo.zugspitze.commands.ICommand;
 	import org.foomo.zugspitze.services.upload.UploadProxy;
 	import org.foomo.zugspitze.services.upload.calls.ChunkUploadCall;
 	import org.foomo.zugspitze.services.upload.events.ChunkUploadCallEvent;
-				
-	import org.foomo.zugspitze.commands.Command;
-	import org.foomo.zugspitze.commands.ICommand;
-	import org.foomo.zugspitze.core.IUnload;
 
 	/**
 	 * Create your own command instance and override the protected event handlers
