@@ -3,7 +3,7 @@
 	<id>org.foomo.zugspitze.services.upload</id>
 	<group>org.foomo.zugspitze.services</group>
 	<type>Library Project</type>
-	<name>Upload Service & models</name>
+	<name>Upload Service and models</name>
 	<description>Includes the upload service and a filereference model</description>
 	<exclude>false</exclude>
 	<dependencies>
