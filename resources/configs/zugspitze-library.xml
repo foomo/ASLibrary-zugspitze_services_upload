@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.foomo.org/zugspitze" xsi:schemaLocation="http://www.foomo.org/zugspitze http://www.foomo.org/foomo/modules/Foomo.Zugspitze/schemas/library.xsd">
-	<sources>
-		<path>vendors/upload</path>
-	</sources>
-	<externals/>
-</config>
