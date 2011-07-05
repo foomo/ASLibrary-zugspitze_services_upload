@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.foomo.org/zugspitze" xsi:schemaLocation="http://www.foomo.org/zugspitze http://www.foomo.org/foomo/modules/Foomo.Zugspitze/schemas/project.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.foomo.org" xsi:schemaLocation="http://www.foomo.org http://www.foomo.org/foomo/modules/Foomo.Flash/schemas/project.xsd">
 	<id>org.foomo.zugspitze.services.upload</id>
+	<group>org.foomo.zugspitze.services</group>
 	<type>Library Project</type>
-	<name>Upload Service</name>
-	<description>Includes some services</description>
+	<name>Upload Service & models</name>
+	<description>Includes the upload service and a filereference model</description>
+	<exclude>false</exclude>
 	<dependencies>
-		<id>org.foomo.flash</id>
+		<id>org.foomo.core</id>
+		<id>org.foomo.rpc</id>
 		<id>org.foomo.zugspitze.core</id>
-		<id>org.foomo.zugspitze.services.core.rpc</id>
-		<id>org.foomo.zugspitze.services.core.proxy</id>
+		<id>org.foomo.zugspitze.rpc</id>
 	</dependencies>
 </config>

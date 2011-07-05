@@ -22,7 +22,7 @@ package org.foomo.zugspitze.services.upload.operations
 	import flash.events.SecurityErrorEvent;
 	import flash.net.FileReference;
 
-	import org.foomo.flash.core.IUnload;
+	import org.foomo.core.IUnload;
 	import org.foomo.zugspitze.operations.Operation;
 	import org.foomo.zugspitze.services.upload.events.LoadFileReferenceOperationEvent;
 

@@ -18,7 +18,7 @@ package org.foomo.zugspitze.services.upload.commands
 {
 	import flash.events.Event;
 
-	import org.foomo.flash.core.IUnload;
+	import org.foomo.core.IUnload;
 	import org.foomo.zugspitze.commands.Command;
 	import org.foomo.zugspitze.commands.ICommand;
 	import org.foomo.zugspitze.events.OperationEvent;

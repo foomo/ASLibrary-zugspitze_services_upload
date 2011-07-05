@@ -20,7 +20,7 @@ package org.foomo.zugspitze.services.upload.operations
 
 	import mx.utils.Base64Encoder;
 
-	import org.foomo.flash.core.IUnload;
+	import org.foomo.core.IUnload;
 	import org.foomo.zugspitze.operations.CompositeOperation;
 	import org.foomo.zugspitze.services.namespaces.php.foomo.zugspitze.services.upload.Info;
 	import org.foomo.zugspitze.services.upload.UploadProxy;

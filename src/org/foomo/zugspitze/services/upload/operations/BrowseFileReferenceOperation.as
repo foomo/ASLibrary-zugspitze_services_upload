@@ -19,7 +19,7 @@ package org.foomo.zugspitze.services.upload.operations
 	import flash.events.Event;
 	import flash.net.FileReference;
 
-	import org.foomo.flash.core.IUnload;
+	import org.foomo.core.IUnload;
 	import org.foomo.zugspitze.operations.IOperation;
 	import org.foomo.zugspitze.operations.Operation;
 	import org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent;
