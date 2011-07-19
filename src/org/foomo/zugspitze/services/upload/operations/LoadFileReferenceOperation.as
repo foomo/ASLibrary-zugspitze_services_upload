@@ -23,15 +23,14 @@ package org.foomo.zugspitze.services.upload.operations
 	import flash.net.FileReference;
 
 	import org.foomo.core.IUnload;
-	import org.foomo.zugspitze.operations.Operation;
-	import org.foomo.zugspitze.services.upload.events.LoadFileReferenceOperationEvent;
+	import org.foomo.zugspitze.operations.ProgressOperation;
 
 	/**
 	 * @link    http://www.foomo.org
 	 * @license http://www.gnu.org/licenses/lgpl.txt
 	 * @author  franklin <franklin@weareinteractive.com>
 	 */
-	public class LoadFileReferenceOperation extends Operation implements IUnload
+	public class LoadFileReferenceOperation extends ProgressOperation implements IUnload
 	{
 		//-----------------------------------------------------------------------------------------
 		// ~ Variables
@@ -48,7 +47,6 @@ package org.foomo.zugspitze.services.upload.operations
 
 		public function LoadFileReferenceOperation(fileReference:FileReference)
 		{
-			super(LoadFileReferenceOperationEvent);
 			this._fileReference = fileReference;
 			this._fileReference.addEventListener(Event.COMPLETE, this.fileReference_completeHandler);
 			this._fileReference.addEventListener(IOErrorEvent.IO_ERROR, this.fileReference_errorHandler);

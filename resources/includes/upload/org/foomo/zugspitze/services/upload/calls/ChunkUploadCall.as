@@ -16,13 +16,10 @@
  */
 package org.foomo.zugspitze.services.upload.calls
 {
-	import org.foomo.zugspitze.services.upload.events.ChunkUploadCallEvent;
 	import org.foomo.zugspitze.rpc.calls.ProxyMethodCall;
 	import org.foomo.zugspitze.services.namespaces.php.foomo.zugspitze.services.upload.Info;
+	import org.foomo.utils.CompilerUtil;
 
-	[Event(name="chunkUploadCallComplete", type="org.foomo.zugspitze.services.upload.events.ChunkUploadCallEvent")]
-	[Event(name="chunkUploadCallProgress", type="org.foomo.zugspitze.services.upload.events.ChunkUploadCallEvent")]
-	[Event(name="chunkUploadCallError", type="org.foomo.zugspitze.services.upload.events.ChunkUploadCallEvent")]
 
 	/**
 	 * @link    http://www.foomo.org
@@ -43,7 +40,7 @@ package org.foomo.zugspitze.services.upload.calls
 
 		public function ChunkUploadCall(chunk:String, totalLength:int, uploadName:String, uploadId:String)
 		{
-			super(METHOD_NAME, [chunk, totalLength, uploadName, uploadId], ChunkUploadCallEvent);
+			super(METHOD_NAME, [chunk, totalLength, uploadName, uploadId]);
 		}
 
 		//-----------------------------------------------------------------------------------------

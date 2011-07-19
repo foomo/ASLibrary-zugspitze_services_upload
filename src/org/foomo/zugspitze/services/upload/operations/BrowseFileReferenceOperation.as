@@ -22,11 +22,6 @@ package org.foomo.zugspitze.services.upload.operations
 	import org.foomo.core.IUnload;
 	import org.foomo.zugspitze.operations.IOperation;
 	import org.foomo.zugspitze.operations.Operation;
-	import org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent;
-
-	[Event(name="browseFileReferenceOperationComplete", type="org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent")]
-	[Event(name="browseFileReferenceOperationProgress", type="org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent")]
-	[Event(name="browseFileReferenceOperationError", type="org.foomo.zugspitze.services.upload.events.BrowseFileReferenceOperationEvent")]
 
 	/**
 	 * @link    http://www.foomo.org
@@ -39,8 +34,9 @@ package org.foomo.zugspitze.services.upload.operations
 		// ~ Constants
 		//-----------------------------------------------------------------------------------------
 
-		public static const SIZE_TOO_BIG_ERROR:String 	= 'sizeTooBig';
-		public static const SIZE_TOO_SMALL_ERROR:String = 'sizeTooSmall';
+		public static const SIZE_TOO_BIG:String 	= 'sizeTooBig';
+		public static const SIZE_TOO_SMALL:String 	= 'sizeTooSmall';
+		public static const NO_FILE_SELECTED:String = 'noFileSelected';
 
 		//-----------------------------------------------------------------------------------------
 		// ~ Variables
@@ -65,7 +61,6 @@ package org.foomo.zugspitze.services.upload.operations
 
 		public function BrowseFileReferenceOperation(typeFiler:Array, maxSize:int=0, minSize:int=0)
 		{
-			super(BrowseFileReferenceOperationEvent);
 			this._maxSize = maxSize;
 			this._minSize = minSize;
 			this._fileReference = new FileReference;
@@ -98,9 +93,9 @@ package org.foomo.zugspitze.services.upload.operations
 		protected function fileReference_selectHandler(event:Event):void
 		{
 			if (this._maxSize > 0 && this._maxSize < this._fileReference.size) {
-				this.dispatchOperationErrorEvent(SIZE_TOO_BIG_ERROR);
+				this.dispatchOperationErrorEvent(SIZE_TOO_BIG);
 			} else if (this._minSize > 0 && this._minSize > this._fileReference.size) {
-				this.dispatchOperationErrorEvent(SIZE_TOO_SMALL_ERROR);
+				this.dispatchOperationErrorEvent(SIZE_TOO_SMALL);
 			} else {
 				this.dispatchOperationCompleteEvent(this._fileReference);
 			}
@@ -111,7 +106,7 @@ package org.foomo.zugspitze.services.upload.operations
 		 */
 		protected function fileReference_cancelHandler(event:Event):void
 		{
-			this.dispatchOperationCompleteEvent(null);
+			this.dispatchOperationErrorEvent(NO_FILE_SELECTED);
 		}
 	}
 }

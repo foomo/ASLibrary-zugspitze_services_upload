@@ -17,13 +17,8 @@
 package org.foomo.zugspitze.services.upload.operations
 {
 	import org.foomo.zugspitze.services.upload.UploadProxy;
-	import org.foomo.zugspitze.services.upload.events.CancelChunkUploadOperationEvent;
-
+	
 	import org.foomo.zugspitze.rpc.operations.ProxyMethodOperation;
-
-	[Event(name="CancelChunkUploadOperationComplete", type="org.foomo.zugspitze.services.upload.events.CancelChunkUploadOperationEvent")]
-	[Event(name="CancelChunkUploadOperationProgress", type="org.foomo.zugspitze.services.upload.events.CancelChunkUploadOperationEvent")]
-	[Event(name="CancelChunkUploadOperationError", type="org.foomo.zugspitze.services.upload.events.CancelChunkUploadOperationEvent")]
 
 	/**
 	 * @link    http://www.foomo.org
@@ -41,19 +36,7 @@ package org.foomo.zugspitze.services.upload.operations
 		 */
 		public function CancelChunkUploadOperation(uploadId:String, proxy:UploadProxy)
 		{
-			super(proxy, 'cancelChunkUpload', [uploadId], CancelChunkUploadOperationEvent);
-		}
-
-		//-----------------------------------------------------------------------------------------
-		// ~ Public methods
-		//-----------------------------------------------------------------------------------------
-
-		/**
-		 *
-		 */
-		public function get result():Boolean
-		{
-			return this.untypedResult;
+			super(proxy, 'cancelChunkUpload', [uploadId]);
 		}
 	}
 }

@@ -16,6 +16,7 @@
  */
 package org.foomo.zugspitze.services.namespaces.php.foomo.zugspitze.services.upload
 {
+									
 	[Bindable]
 	[RemoteClass(alias='Foomo.Zugspitze.Services.Upload.Info')]
 
@@ -24,8 +25,7 @@ package org.foomo.zugspitze.services.namespaces.php.foomo.zugspitze.services.upl
 	 * @license http://www.gnu.org/licenses/lgpl.txt
 	 * @author  franklin <franklin@weareinteractive.com>
 	 */
-	public class Info
-	{
+	public class Info	{
 		//-----------------------------------------------------------------------------------------
 		// ~ Variables
 		//-----------------------------------------------------------------------------------------

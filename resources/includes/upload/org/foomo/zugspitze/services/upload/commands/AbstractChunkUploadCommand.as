@@ -18,10 +18,10 @@ package org.foomo.zugspitze.services.upload.commands
 {
 	import org.foomo.zugspitze.services.upload.UploadProxy;
 	import org.foomo.zugspitze.services.upload.calls.ChunkUploadCall;
-	import org.foomo.zugspitze.services.upload.events.ChunkUploadCallEvent;
 				
 	import org.foomo.zugspitze.commands.Command;
 	import org.foomo.zugspitze.commands.ICommand;
+	import org.foomo.zugspitze.rpc.events.ProxyMethodCallEvent;
 	import org.foomo.core.IUnload;
 
 	/**
@@ -94,9 +94,9 @@ package org.foomo.zugspitze.services.upload.commands
 		public function execute():void
 		{
 			this._methodCall = this.proxy.chunkUpload(this.chunk, this.totalLength, this.uploadName, this.uploadId);
-			this._methodCall.addEventListener(ChunkUploadCallEvent.CHUNK_UPLOAD_CALL_ERROR, this.abstractErrorHandler);
-			this._methodCall.addEventListener(ChunkUploadCallEvent.CHUNK_UPLOAD_CALL_PROGRESS, this.abstractProgressHandler);
-			this._methodCall.addEventListener(ChunkUploadCallEvent.CHUNK_UPLOAD_CALL_COMPLETE, this.abstractCompleteHandler);
+			this._methodCall.addEventListener(ProxyMethodCallEvent.PROXY_METHOD_CALL_RESULT, this.methodCall_proxyMethodCallResultHandler);
+			this._methodCall.addEventListener(ProxyMethodCallEvent.PROXY_METHOD_CALL_PROGRESS, this.methodCall_proxyMethodCallProgressHandler);
+			this._methodCall.addEventListener(ProxyMethodCallEvent.PROXY_METHOD_CALL_EXCEPTION, this.methodCall_proxyMethodCallExceptionHandler);
 		}
 
 		/**
@@ -110,9 +110,9 @@ package org.foomo.zugspitze.services.upload.commands
 			this.uploadName = '';
 			this.uploadId = '';
 			if (this._methodCall) {
-				this._methodCall.removeEventListener(ChunkUploadCallEvent.CHUNK_UPLOAD_CALL_ERROR, this.abstractErrorHandler);
-				this._methodCall.removeEventListener(ChunkUploadCallEvent.CHUNK_UPLOAD_CALL_PROGRESS, this.abstractProgressHandler);
-				this._methodCall.removeEventListener(ChunkUploadCallEvent.CHUNK_UPLOAD_CALL_COMPLETE, this.abstractCompleteHandler);
+				this._methodCall.removeEventListener(ProxyMethodCallEvent.PROXY_METHOD_CALL_RESULT, this.methodCall_proxyMethodCallResultHandler);
+				this._methodCall.removeEventListener(ProxyMethodCallEvent.PROXY_METHOD_CALL_PROGRESS, this.methodCall_proxyMethodCallProgressHandler);
+				this._methodCall.removeEventListener(ProxyMethodCallEvent.PROXY_METHOD_CALL_EXCEPTION, this.methodCall_proxyMethodCallExceptionHandler);
 				this._methodCall = null;
 			}
 		}
@@ -122,24 +122,24 @@ package org.foomo.zugspitze.services.upload.commands
 		//-----------------------------------------------------------------------------------------
 
 		/**
-		 * Handle method call progress
-		 *
-		 * @param event Method call event
-		 */
-		protected function abstractProgressHandler(event:ChunkUploadCallEvent):void
-		{
-			// Overwrite this method in your implementation class
-		}
-
-		/**
 		 * Handle method call result
 		 *
 		 * @param event Method call event
 		 */
-		protected function abstractCompleteHandler(event:ChunkUploadCallEvent):void
+		protected function methodCall_proxyMethodCallResultHandler(event:ProxyMethodCallEvent):void
 		{
 			// Overwrite this method in your implementation class
 			this.dispatchCommandCompleteEvent();
+		}
+
+		/**
+		 * Handle method call progress
+		 *
+		 * @param event Method call event
+		 */
+		protected function methodCall_proxyMethodCallProgressHandler(event:ProxyMethodCallEvent):void
+		{
+			// Overwrite this method in your implementation class
 		}
 
 		/**
@@ -147,10 +147,10 @@ package org.foomo.zugspitze.services.upload.commands
 		 *
 		 * @param event Method call event
 		 */
-		protected function abstractErrorHandler(event:ChunkUploadCallEvent):void
+		protected function methodCall_proxyMethodCallExceptionHandler(event:ProxyMethodCallEvent):void
 		{
 			// Overwrite this method in your implementation class
-			this.dispatchCommandErrorEvent(event.error);
+			this.dispatchCommandErrorEvent();
 		}
 	}
 }

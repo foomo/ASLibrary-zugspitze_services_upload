@@ -43,7 +43,11 @@ package org.foomo.zugspitze.services.upload
 		/**
 		 *
 		 */
-		public static var defaultEndPoint:String = 'http://foomo.radact.interact.com/foomo/index.php/Foomo/showMVCApp/Foomo.Zugspitze.ProxyGenerator/serve';
+		private static var _instance:UploadProxy;
+		/**
+		 *
+		 */
+		public static var defaultEndPoint:String = "http://foomo.radact.interact.com/foomo/modules/Foomo.Zugspitze/services/upload.php/Foomo.Services.RPC/serve";
 
 		//-----------------------------------------------------------------------------------------
 		// ~ Constructor
@@ -51,7 +55,8 @@ package org.foomo.zugspitze.services.upload
 
 		public function UploadProxy(endPoint:String=null)
 		{
-			super((endPoint != null) ? endPoint : defaultEndPoint, CLASS_NAME, VERSION);
+			if (endPoint == null) endPoint = defaultEndPoint;
+			super(endPoint, CLASS_NAME, VERSION);
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -72,6 +77,18 @@ package org.foomo.zugspitze.services.upload
 		public function cancelChunkUpload(uploadId:String):CancelChunkUploadCall
 		{
 			return zugspitze_internal::sendMethodCall(new CancelChunkUploadCall(uploadId));
+		}
+
+		//-----------------------------------------------------------------------------------------
+		// ~ Public static methods
+		//-----------------------------------------------------------------------------------------
+
+		/**
+		 *
+		 */
+		public static function get defaultInstance():UploadProxy		{
+			if (!_instance) _instance = new UploadProxy(defaultEndPoint);
+			return _instance;
 		}
 	}
 }

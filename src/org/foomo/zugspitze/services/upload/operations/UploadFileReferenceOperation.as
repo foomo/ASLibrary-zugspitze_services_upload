@@ -21,11 +21,11 @@ package org.foomo.zugspitze.services.upload.operations
 	import mx.utils.Base64Encoder;
 
 	import org.foomo.core.IUnload;
-	import org.foomo.zugspitze.operations.CompositeOperation;
+	import org.foomo.zugspitze.events.OperationEvent;
+	import org.foomo.zugspitze.operations.OperationChain;
+	import org.foomo.zugspitze.operations.ProgressOperation;
 	import org.foomo.zugspitze.services.namespaces.php.foomo.zugspitze.services.upload.Info;
 	import org.foomo.zugspitze.services.upload.UploadProxy;
-	import org.foomo.zugspitze.services.upload.events.ChunkUploadOperationEvent;
-	import org.foomo.zugspitze.services.upload.events.UploadFileReferenceOperationEvent;
 	import org.foomo.zugspitze.services.upload.vos.UploadReference;
 
 	/**
@@ -34,7 +34,7 @@ package org.foomo.zugspitze.services.upload.operations
 	 * @author  franklin <franklin@weareinteractive.com>
 	 * @author  jan <jan@bestbytes.de>
 	 */
-	public class UploadFileReferenceOperation extends CompositeOperation implements IUnload
+	public class UploadFileReferenceOperation extends ProgressOperation implements IUnload
 	{
 		//-----------------------------------------------------------------------------------------
 		// ~ Constants
@@ -86,9 +86,8 @@ package org.foomo.zugspitze.services.upload.operations
 		// ~ Constructor
 		//-----------------------------------------------------------------------------------------
 
-		public function UploadFileReferenceOperation(proxy:UploadProxy, fileReference:FileReference, chunkSize:int=65536)
+		public function UploadFileReferenceOperation(fileReference:FileReference, proxy:UploadProxy, chunkSize:int=65536)
 		{
-			super(UploadFileReferenceOperationEvent);
 			this._proxy = proxy;
 			this._encoder = new Base64Encoder;
 			this._fileReference = fileReference;
@@ -117,25 +116,20 @@ package org.foomo.zugspitze.services.upload.operations
 			var offset:uint = (this._uploadInfo) ? this._uploadInfo.size : 0;
 			var length:uint = Math.min(this._fileReference.data.length - offset, this._chunkSize);
 			this._encoder.encodeBytes(this._fileReference.data, offset, length);
-			this.registerOperation(
-				new ChunkUploadOperation(
-					this._encoder.toString(),
-					this._fileReference.size,
-					this._fileReference.name,
-					(this._uploadInfo) ? this._uploadInfo.id : null,
-					this._proxy
-				),
-				this.chunkedUploadOperation_operationCompleteHandler
-			);
+			OperationChain
+				.create(ChunkUploadOperation, this._encoder.toString(), this._fileReference.size, this._fileReference.name, (this._uploadInfo) ? this._uploadInfo.id : null, this._proxy)
+				.addOperationCompleteListener(this.chunkedUploadOperation_operationCompleteHandler)
+				.unloadOnOperationComplete();
+			;
 		}
 
 		//-----------------------------------------------------------------------------------------
 		// ~ Protected eventhandler
 		//-----------------------------------------------------------------------------------------
 
-		protected function chunkedUploadOperation_operationCompleteHandler(event:ChunkUploadOperationEvent):void
+		protected function chunkedUploadOperation_operationCompleteHandler(event:OperationEvent):void
 		{
-			this._uploadInfo = event.result;
+			this._uploadInfo = event.operation.result;
 
 			this.dispatchOperationProgressEvent(this._fileReference.size, this._uploadInfo.size);
 

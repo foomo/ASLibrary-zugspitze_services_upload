@@ -16,12 +16,8 @@
  */
 package org.foomo.zugspitze.services.upload.calls
 {
-	import org.foomo.zugspitze.services.upload.events.CancelChunkUploadCallEvent;
 	import org.foomo.zugspitze.rpc.calls.ProxyMethodCall;
 
-	[Event(name="cancelChunkUploadCallComplete", type="org.foomo.zugspitze.services.upload.events.CancelChunkUploadCallEvent")]
-	[Event(name="cancelChunkUploadCallProgress", type="org.foomo.zugspitze.services.upload.events.CancelChunkUploadCallEvent")]
-	[Event(name="cancelChunkUploadCallError", type="org.foomo.zugspitze.services.upload.events.CancelChunkUploadCallEvent")]
 
 	/**
 	 * @link    http://www.foomo.org
@@ -42,7 +38,7 @@ package org.foomo.zugspitze.services.upload.calls
 
 		public function CancelChunkUploadCall(uploadId:String)
 		{
-			super(METHOD_NAME, [uploadId], CancelChunkUploadCallEvent);
+			super(METHOD_NAME, [uploadId]);
 		}
 
 		//-----------------------------------------------------------------------------------------
