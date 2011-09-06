@@ -20,6 +20,7 @@ package org.foomo.zugspitze.services.upload.operations
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.net.FileReference;
+	import flash.net.FileReferenceList;
 
 	import org.foomo.memory.IUnload;
 	import org.foomo.zugspitze.operations.IOperation;
@@ -30,14 +31,16 @@ package org.foomo.zugspitze.services.upload.operations
 	 * @license http://www.gnu.org/licenses/lgpl.txt
 	 * @author  franklin <franklin@weareinteractive.com>
 	 */
-	public class BrowseFileReferenceOperation extends Operation implements IOperation, IUnload
+	public class BrowseFileReferenceListOperation extends Operation implements IOperation, IUnload
 	{
 		//-----------------------------------------------------------------------------------------
 		// ~ Constants
 		//-----------------------------------------------------------------------------------------
 
+		public static const IO_ERROR:String 		= 'ioError';
 		public static const SIZE_TOO_BIG:String 	= 'sizeTooBig';
 		public static const SIZE_TOO_SMALL:String 	= 'sizeTooSmall';
+		public static const SECURITY_ERROR:String 	= 'securityError';
 		public static const NO_FILE_SELECTED:String = 'noFileSelected';
 
 		//-----------------------------------------------------------------------------------------
@@ -47,7 +50,7 @@ package org.foomo.zugspitze.services.upload.operations
 		/**
 		 *
 		 */
-		private var _fileReference:FileReference;
+		private var _fileReferenceList:FileReferenceList;
 		/**
 		 *
 		 */
@@ -61,14 +64,14 @@ package org.foomo.zugspitze.services.upload.operations
 		// ~ Constructor
 		//-----------------------------------------------------------------------------------------
 
-		public function BrowseFileReferenceOperation(typeFiler:Array=null, maxSize:int=0, minSize:int=0)
+		public function BrowseFileReferenceListOperation(typeFiler:Array=null, maxSize:int=0, minSize:int=0)
 		{
 			this._maxSize = maxSize;
 			this._minSize = minSize;
-			this._fileReference = new FileReference;
-			this._fileReference.addEventListener(Event.SELECT, this.fileReference_selectHandler);
-			this._fileReference.addEventListener(Event.CANCEL, this.fileReference_cancelHandler);
-			this._fileReference.browse(typeFiler);
+			this._fileReferenceList = new FileReferenceList;
+			this._fileReferenceList.addEventListener(Event.SELECT, this.fileReferenceList_selectHandler);
+			this._fileReferenceList.addEventListener(Event.CANCEL, this.fileReferenceList_cancelHandler);
+			this._fileReferenceList.browse(typeFiler);
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -80,9 +83,9 @@ package org.foomo.zugspitze.services.upload.operations
 		 */
 		public function unload():void
 		{
-			this._fileReference.removeEventListener(Event.SELECT, this.fileReference_selectHandler);
-			this._fileReference.removeEventListener(Event.CANCEL, this.fileReference_cancelHandler);
-			this._fileReference = null;
+			this._fileReferenceList.removeEventListener(Event.SELECT, this.fileReferenceList_selectHandler);
+			this._fileReferenceList.removeEventListener(Event.CANCEL, this.fileReferenceList_cancelHandler);
+			this._fileReferenceList = null;
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -92,21 +95,26 @@ package org.foomo.zugspitze.services.upload.operations
 		/**
 		 *
 		 */
-		protected function fileReference_selectHandler(event:Event):void
+		protected function fileReferenceList_selectHandler(event:Event):void
 		{
-			if (this._maxSize > 0 && this._maxSize < this._fileReference.size) {
-				this.dispatchOperationErrorEvent(SIZE_TOO_BIG);
-			} else if (this._minSize > 0 && this._minSize > this._fileReference.size) {
-				this.dispatchOperationErrorEvent(SIZE_TOO_SMALL);
-			} else {
-				this.dispatchOperationCompleteEvent(this._fileReference);
+			for each (var fileReference:FileReference in this._fileReferenceList.fileList) {
+				if (this._maxSize > 0 && this._maxSize < fileReference.size) {
+					this.dispatchOperationErrorEvent(SIZE_TOO_BIG);
+					return;
+				} else if (this._minSize > 0 && this._minSize > fileReference.size) {
+					this.dispatchOperationErrorEvent(SIZE_TOO_SMALL);
+					return;
+				} else {
+					// all good
+				}
 			}
+			this.dispatchOperationCompleteEvent(this._fileReferenceList);
 		}
 
 		/**
 		 *
 		 */
-		protected function fileReference_cancelHandler(event:Event):void
+		protected function fileReferenceList_cancelHandler(event:Event):void
 		{
 			this.dispatchOperationErrorEvent(NO_FILE_SELECTED);
 		}

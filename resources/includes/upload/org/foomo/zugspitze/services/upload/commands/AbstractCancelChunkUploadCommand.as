@@ -22,7 +22,7 @@ package org.foomo.zugspitze.services.upload.commands
 	import org.foomo.zugspitze.commands.Command;
 	import org.foomo.zugspitze.commands.ICommand;
 	import org.foomo.zugspitze.rpc.events.ProxyMethodCallEvent;
-	import org.foomo.core.IUnload;
+	import org.foomo.memory.IUnload;
 
 	/**
 	 * Create your own command instance and override the protected event handlers

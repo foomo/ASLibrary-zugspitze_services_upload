@@ -21,6 +21,7 @@ package org.foomo.zugspitze.services.upload.operations
 	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.net.FileReference;
+	import flash.net.FileReferenceList;
 
 	import org.foomo.memory.IUnload;
 	import org.foomo.zugspitze.operations.ProgressOperation;
@@ -30,7 +31,7 @@ package org.foomo.zugspitze.services.upload.operations
 	 * @license http://www.gnu.org/licenses/lgpl.txt
 	 * @author  franklin <franklin@weareinteractive.com>
 	 */
-	public class LoadFileReferenceOperation extends ProgressOperation implements IUnload
+	public class LoadFileReferenceListOperation extends ProgressOperation implements IUnload
 	{
 		//-----------------------------------------------------------------------------------------
 		// ~ Variables
@@ -39,20 +40,24 @@ package org.foomo.zugspitze.services.upload.operations
 		/**
 		 *
 		 */
-		private var _fileReference:FileReference
+		private var _fileReferenceList:FileReferenceList;
+		/**
+		 *
+		 */
+		private var _fileReference:FileReference;
+		/**
+		 *
+		 */
+		private var _fileReferences:Array = [];
 
 		//-----------------------------------------------------------------------------------------
 		// ~ Constructor
 		//-----------------------------------------------------------------------------------------
 
-		public function LoadFileReferenceOperation(fileReference:FileReference)
+		public function LoadFileReferenceListOperation(fileReferenceList:FileReferenceList)
 		{
-			this._fileReference = fileReference;
-			this._fileReference.addEventListener(Event.COMPLETE, this.fileReference_completeHandler);
-			this._fileReference.addEventListener(IOErrorEvent.IO_ERROR, this.fileReference_errorHandler);
-			this._fileReference.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this.fileReference_errorHandler);
-			this._fileReference.addEventListener(ProgressEvent.PROGRESS, this.fileReference_progressHandler);
-			this._fileReference.load();
+			this._fileReferenceList = fileReferenceList;
+			this.loadFileReference();
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -64,11 +69,26 @@ package org.foomo.zugspitze.services.upload.operations
 		 */
 		public function unload():void
 		{
-			this._fileReference.removeEventListener(Event.COMPLETE, this.fileReference_completeHandler);
-			this._fileReference.removeEventListener(IOErrorEvent.IO_ERROR, this.fileReference_errorHandler);
-			this._fileReference.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, this.fileReference_errorHandler);
-			this._fileReference.removeEventListener(ProgressEvent.PROGRESS, this.fileReference_progressHandler);
-			this._fileReference = null;
+			this._fileReferenceList = null;
+		}
+
+		//-----------------------------------------------------------------------------------------
+		// ~ Protected methods
+		//-----------------------------------------------------------------------------------------
+
+		protected function loadFileReference():void
+		{
+			if (this._fileReferences.length < this._fileReferenceList.fileList.length) {
+				this._fileReference = this._fileReferenceList.fileList[this._fileReferences.length];
+				this._fileReference.addEventListener(Event.COMPLETE, this.fileReference_completeHandler);
+				this._fileReference.addEventListener(IOErrorEvent.IO_ERROR, this.fileReference_errorHandler);
+				this._fileReference.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this.fileReference_errorHandler);
+				this._fileReference.addEventListener(ProgressEvent.PROGRESS, this.fileReference_progressHandler);
+				this._fileReference.load();
+			} else {
+				this.dispatchOperationCompleteEvent(this._fileReferenceList);
+				this._fileReferences = null;
+			}
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -80,7 +100,9 @@ package org.foomo.zugspitze.services.upload.operations
 		 */
 		protected function fileReference_progressHandler(event:ProgressEvent):void
 		{
-			this.dispatchOperationProgressEvent(event.bytesTotal, event.bytesLoaded);
+			var part:Number = 100 / this._fileReferenceList.fileList.length;
+			var progress:Number = event.bytesLoaded / event.bytesTotal * part + this._fileReferences.length * part;
+			this.dispatchOperationProgressEvent(100, Math.round(progress));
 		}
 
 		/**
@@ -88,7 +110,13 @@ package org.foomo.zugspitze.services.upload.operations
 		 */
 		protected function fileReference_completeHandler(event:Event):void
 		{
-			this.dispatchOperationCompleteEvent(this._fileReference);
+			this._fileReference.removeEventListener(Event.COMPLETE, this.fileReference_completeHandler);
+			this._fileReference.removeEventListener(IOErrorEvent.IO_ERROR, this.fileReference_errorHandler);
+			this._fileReference.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, this.fileReference_errorHandler);
+			this._fileReference.removeEventListener(ProgressEvent.PROGRESS, this.fileReference_progressHandler);
+			this._fileReferences.push(this._fileReference);
+			this._fileReference = null;
+			this.loadFileReference();
 		}
 
 		/**
@@ -96,7 +124,7 @@ package org.foomo.zugspitze.services.upload.operations
 		 */
 		protected function fileReference_errorHandler(event:Event):void
 		{
-			this.dispatchOperationErrorEvent(event['text']);
+			this.dispatchOperationErrorEvent(event);
 		}
 	}
 }
