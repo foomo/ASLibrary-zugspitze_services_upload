@@ -168,6 +168,7 @@ package org.foomo.zugspitze.services.upload.operations
 				uploadReference.creationDate = this._fileReference.creationDate.getTime();
 				uploadReference.modificationDate = this._fileReference.modificationDate.getTime();
 				this._uploadReferences.push(uploadReference);
+				this._uploadInfo = null;
 				this.uploadFileReference();
 			}
 		}
