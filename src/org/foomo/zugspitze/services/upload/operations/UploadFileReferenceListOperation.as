@@ -21,7 +21,6 @@ package org.foomo.zugspitze.services.upload.operations
 
 	import mx.utils.Base64Encoder;
 
-	import org.foomo.memory.IUnload;
 	import org.foomo.zugspitze.events.OperationEvent;
 	import org.foomo.zugspitze.operations.OperationChain;
 	import org.foomo.zugspitze.operations.ProgressOperation;
@@ -34,29 +33,8 @@ package org.foomo.zugspitze.services.upload.operations
 	 * @license http://www.gnu.org/licenses/lgpl.txt
 	 * @author  franklin <franklin@weareinteractive.com>
 	 */
-	public class UploadFileReferenceListOperation extends ProgressOperation implements IUnload
+	public class UploadFileReferenceListOperation extends ProgressOperation
 	{
-		//-----------------------------------------------------------------------------------------
-		// ~ Constants
-		//-----------------------------------------------------------------------------------------
-
-		/**
-		 * about the chunk size: results of a quick and dirty measurement (local transmission, no network, 2MiB file)
-		 *
-		 *    CHUNK_SIZE      duration (ms)
-		 *          4096         26171
-		 *          8192         15282
-		 *         16384          8780
-		 *         32768          5340
-		 *         65536          4135
-		 *        131072          3436
-		 *        262144          2994
-		 *        524288          2834
-		 *       1048576          2781
-		 */
-		public static const DEFAULT_CHUNK_SIZE:int 	= 65536; // 64 KiB
-		public static const MIN_CHUNK_SIZE:int 		= 100;
-
 		//-----------------------------------------------------------------------------------------
 		// ~ Variables
 		//-----------------------------------------------------------------------------------------
@@ -89,32 +67,37 @@ package org.foomo.zugspitze.services.upload.operations
 		 *
 		 */
 		private var _uploadReferences:Array = [];
+		/**
+		 *
+		 */
+		private var _unloadFileReferences:Boolean;
 
 		//-----------------------------------------------------------------------------------------
 		// ~ Constructor
 		//-----------------------------------------------------------------------------------------
 
-		public function UploadFileReferenceListOperation(fileReferenceList:FileReferenceList, proxy:UploadProxy, chunkSize:int=65536)
+		public function UploadFileReferenceListOperation(fileReferenceList:FileReferenceList, proxy:UploadProxy, chunkSize:int=65536, unloadFileReferences:Boolean=true)
 		{
 			this._proxy = proxy;
 			this._encoder = new Base64Encoder;
 			this._fileReferenceList = fileReferenceList;
-			this._chunkSize = Math.max(chunkSize, MIN_CHUNK_SIZE);
+			this._unloadFileReferences = unloadFileReferences;
+			this._chunkSize = Math.max(chunkSize, UploadFileReferenceOperation.MIN_CHUNK_SIZE);
 			this.uploadFileReference();
 		}
 
 		//-----------------------------------------------------------------------------------------
-		// ~ Public methods
+		// ~ Overriden methods
 		//-----------------------------------------------------------------------------------------
 
-		public function unload():void
+		override public function unload():void
 		{
-			this._proxy = null;
-			this._encoder = null;
-			this._uploadInfo = null;
-			this._fileReference = null;
-			this._uploadReferences = null;
+			super.unload();
 			this._fileReferenceList = null;
+			this._uploadReferences = null;
+			this._fileReference = null;
+			this._uploadInfo = null;
+			this._encoder = null;
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -167,6 +150,7 @@ package org.foomo.zugspitze.services.upload.operations
 				uploadReference.size = this._fileReference.size;
 				uploadReference.creationDate = this._fileReference.creationDate.getTime();
 				uploadReference.modificationDate = this._fileReference.modificationDate.getTime();
+				if (this._unloadFileReferences && this._fileReference.data) this._fileReference.data.clear();
 				this._uploadReferences.push(uploadReference);
 				this._uploadInfo = null;
 				this.uploadFileReference();

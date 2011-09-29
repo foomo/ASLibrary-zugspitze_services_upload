@@ -81,30 +81,36 @@ package org.foomo.zugspitze.services.upload.operations
 		 *
 		 */
 		private var _encoder:Base64Encoder;
+		/**
+		 *
+		 */
+		private var _unloadFileReference:Boolean;
 
 		//-----------------------------------------------------------------------------------------
 		// ~ Constructor
 		//-----------------------------------------------------------------------------------------
 
-		public function UploadFileReferenceOperation(fileReference:FileReference, proxy:UploadProxy, chunkSize:int=65536)
+		public function UploadFileReferenceOperation(fileReference:FileReference, proxy:UploadProxy, chunkSize:int=65536, unloadFileReference:Boolean=true)
 		{
 			this._proxy = proxy;
 			this._encoder = new Base64Encoder;
 			this._fileReference = fileReference;
+			this._unloadFileReference = unloadFileReference;
 			this._chunkSize = Math.max(chunkSize, MIN_CHUNK_SIZE);
 			this.uploadChunk();
 		}
 
 		//-----------------------------------------------------------------------------------------
-		// ~ Public methods
+		// ~ Overriden methods
 		//-----------------------------------------------------------------------------------------
 
-		public function unload():void
+		override public function unload():void
 		{
-			this._proxy = null;
-			this._encoder = null;
-			this._uploadInfo = null;
+			super.unload();
 			this._fileReference = null;
+			this._uploadInfo = null;
+			this._encoder = null;
+			this._proxy = null;
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -145,6 +151,7 @@ package org.foomo.zugspitze.services.upload.operations
 				uploadReference.size = this._fileReference.size;
 				uploadReference.creationDate = this._fileReference.creationDate.getTime();
 				uploadReference.modificationDate = this._fileReference.modificationDate.getTime();
+				if (this._unloadFileReference && this._fileReference.data) this._fileReference.data.clear();
 				this.dispatchOperationCompleteEvent(uploadReference);
 			}
 		}

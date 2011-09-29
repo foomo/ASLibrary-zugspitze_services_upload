@@ -56,14 +56,15 @@ package org.foomo.zugspitze.services.upload.operations
 		}
 
 		//-----------------------------------------------------------------------------------------
-		// ~ Public methods
+		// ~ Overriden methods
 		//-----------------------------------------------------------------------------------------
 
 		/**
 		 *
 		 */
-		public function unload():void
+		override public function unload():void
 		{
+			super.unload();
 			this._fileReference.removeEventListener(Event.COMPLETE, this.fileReference_completeHandler);
 			this._fileReference.removeEventListener(IOErrorEvent.IO_ERROR, this.fileReference_errorHandler);
 			this._fileReference.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, this.fileReference_errorHandler);
@@ -89,6 +90,7 @@ package org.foomo.zugspitze.services.upload.operations
 		protected function fileReference_completeHandler(event:Event):void
 		{
 			this.dispatchOperationCompleteEvent(this._fileReference);
+			this._fileReference = null;
 		}
 
 		/**

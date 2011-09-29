@@ -72,13 +72,13 @@ package org.foomo.zugspitze.services.upload.operations
 		}
 
 		//-----------------------------------------------------------------------------------------
-		// ~ Public methods
+		// ~ Overriden methods
 		//-----------------------------------------------------------------------------------------
 
 		/**
 		 *
 		 */
-		public function unload():void
+		override public function unload():void
 		{
 			this._fileReference.removeEventListener(Event.SELECT, this.fileReference_selectHandler);
 			this._fileReference.removeEventListener(Event.CANCEL, this.fileReference_cancelHandler);
@@ -86,7 +86,7 @@ package org.foomo.zugspitze.services.upload.operations
 		}
 
 		//-----------------------------------------------------------------------------------------
-		// ~ Private eventhandler
+		// ~ Protected eventhandler
 		//-----------------------------------------------------------------------------------------
 
 		/**
@@ -101,6 +101,7 @@ package org.foomo.zugspitze.services.upload.operations
 			} else {
 				this.dispatchOperationCompleteEvent(this._fileReference);
 			}
+			this._fileReference = null;
 		}
 
 		/**

@@ -23,6 +23,7 @@ package org.foomo.zugspitze.services.upload.operations
 	import flash.net.FileReference;
 	import flash.net.FileReferenceList;
 
+	import org.foomo.managers.LogManager;
 	import org.foomo.memory.IUnload;
 	import org.foomo.zugspitze.operations.ProgressOperation;
 
@@ -61,15 +62,18 @@ package org.foomo.zugspitze.services.upload.operations
 		}
 
 		//-----------------------------------------------------------------------------------------
-		// ~ Public methods
+		// ~ Overriden methods
 		//-----------------------------------------------------------------------------------------
 
 		/**
 		 *
 		 */
-		public function unload():void
+		override public function unload():void
 		{
+			super.unload();
 			this._fileReferenceList = null;
+			this._fileReferences = null;
+			this._fileReference = null;
 		}
 
 		//-----------------------------------------------------------------------------------------
@@ -87,7 +91,6 @@ package org.foomo.zugspitze.services.upload.operations
 				this._fileReference.load();
 			} else {
 				this.dispatchOperationCompleteEvent(this._fileReferenceList);
-				this._fileReferences = null;
 			}
 		}
 
@@ -115,7 +118,6 @@ package org.foomo.zugspitze.services.upload.operations
 			this._fileReference.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, this.fileReference_errorHandler);
 			this._fileReference.removeEventListener(ProgressEvent.PROGRESS, this.fileReference_progressHandler);
 			this._fileReferences.push(this._fileReference);
-			this._fileReference = null;
 			this.loadFileReference();
 		}
 
@@ -124,7 +126,12 @@ package org.foomo.zugspitze.services.upload.operations
 		 */
 		protected function fileReference_errorHandler(event:Event):void
 		{
-			this.dispatchOperationErrorEvent(event);
+			this._fileReference.removeEventListener(Event.COMPLETE, this.fileReference_completeHandler);
+			this._fileReference.removeEventListener(IOErrorEvent.IO_ERROR, this.fileReference_errorHandler);
+			this._fileReference.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, this.fileReference_errorHandler);
+			this._fileReference.removeEventListener(ProgressEvent.PROGRESS, this.fileReference_progressHandler);
+			LogManager.warn(this, 'Could not load local file: {0}', event['text']);
+			this.loadFileReference();
 		}
 	}
 }
